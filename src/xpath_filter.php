@@ -63,9 +63,14 @@ class xpath_filter
     {
         if (null === $allowed_functions) {
             $this->allowed_functions = self::$DEFAULT_ALLOWED_FUNCTIONS;
+        } else {
+            $this->allowed_functions = $allowed_functions;
         }
+
         if (null === $allowed_axes) {
             $this->allowed_axes = self::$DEFAULT_ALLOWED_AXES;
+        } else {
+            $this->allowed_axes = $allowed_axes;
         }
     }
 
