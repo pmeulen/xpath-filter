@@ -80,6 +80,19 @@ class Xpath_filter_utilsTest extends TestCase
         ];
     }
 
+    public function test_filter_xpath_function_speed()
+    {
+        // Measure the time it takes to process a large input, should be less than 1 second
+        $start = microtime(true);
+        // a + -a * 10000 + space * 10000 + (
+        $input = 'a' . str_repeat('-a', 10000) . str_repeat(' ', 10000) . "(";
+        $this->expectException(\Exception::class);
+        $this->assertEquals($input, xpath_filter_utils::filter_xpath_function($input, array('a')));
+        $end = microtime(true);
+        $this->assertLessThan(1, $end - $start, "Processing time was too long");
+
+        // Because filter_xpath_axis() uses the same regex structure, we don't test it separately
+    }
 
     /**
      * @dataProvider provideXpathFunction

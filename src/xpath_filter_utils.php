@@ -12,7 +12,8 @@ class xpath_filter_utils {
      */
     static function remove_string_contents(string $input) : string
     {
-        /* TODO: I don't think this regex is vulnerable to a ReDOS, but we should check
+        /* This regex should not be vulnerable to a ReDOS, because it uses possessive quantifiers that
+         * prevent backtracking.
          * https: *www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS
          *
          * Use possessive quantifiers (i.e. *+ and ++ instead of * and + respectively) to prevent backtracking.
@@ -59,6 +60,9 @@ class xpath_filter_utils {
              * and then match one or more lower-case alpha characters. This ensures that the function name
              * cannot start or end with a hyphen, but can contain one or more hyphens.
              * More than one consecutive hyphen does not match.
+             *
+             * Use possessive quantifiers (i.e. *+ and ++ instead of * and + respectively) to prevent backtracking
+             * and thus prevent a ReDOS.
 
              * '/([a-z]++(?>-[a-z]++)*+)\s*+\(/'
              * (           # Start a capturing group
@@ -100,6 +104,9 @@ class xpath_filter_utils {
          * The only difference is that we match the '::' instead of the '('
          * so everything that was said about the regular expression for function names
          * applies here as well.
+         *
+         * Use possessive quantifiers (i.e. *+ and ++ instead of * and + respectively) to prevent backtracking
+         * and thus prevent a ReDOS.
 
          * '/([a-z]++(?>-[a-z]++)*+)\s*+::'
          * (           # Start a capturing group
